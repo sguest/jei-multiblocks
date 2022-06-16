@@ -1,0 +1,36 @@
+# The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
+modLoader="javafml"
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+# Forge for 1.16.5 is version 36
+loaderVersion="[36,)"
+issueTrackerURL="https://github.com/sguest/jei-multiblocks/issues"
+license="MIT"
+
+[[mods]]
+    modId="jeimultiblocks"
+    version="${version}"
+    displayName="Just Enough Immersive Multiblocks"
+    description="JEI support for Immersive Engineering Multiblocks"
+    authors="sguest"
+    credits="The Immersive Engineering team for a great base mod and source of sample code"
+
+[[dependencies.jeimultiblocks]]
+    modId="forge"
+    mandatory=true
+    versionRange="[${forge_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.jeimultiblocks]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[${mc_version}]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.immersiveengineering]]
+    modId="immersiveengineering"
+    mandatory=true
+    versionRange="[${ie_version}]"
+    ordering="BEFOR"
+    side="BOTH"
