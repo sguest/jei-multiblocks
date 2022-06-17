@@ -28,9 +28,9 @@ license="MIT"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.immersiveengineering]]
+[[dependencies.jeimultiblocks]]
     modId="immersiveengineering"
     mandatory=true
-    versionRange="[${ie_version}]"
-    ordering="BEFOR"
+    versionRange="[${ie_version},)"
+    ordering="BEFORE"
     side="BOTH"
