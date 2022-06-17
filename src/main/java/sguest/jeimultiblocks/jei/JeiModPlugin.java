@@ -16,7 +16,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import sguest.jeimultiblocks.JeiMultiblocks;
-import sguest.jeimultiblocks.MultiblockUtil;
+import sguest.jeimultiblocks.MultiblockWrapper;
 
 @JeiPlugin
 public class JeiModPlugin implements IModPlugin {
@@ -29,8 +29,8 @@ public class JeiModPlugin implements IModPlugin {
     @Override
     public void registerIngredients(IModIngredientRegistration registry)
     {
-        Collection<IETemplateMultiblock> multiblocks = getMultiblockRecipes().stream()
-            .filter(m -> !MultiblockUtil.getMultiblockItem(m).isEmpty())
+        Collection<MultiblockWrapper> multiblocks = getMultiblockRecipes().stream()
+            .filter(m -> !m.getItemStack().isEmpty())
             .collect(Collectors.toList());
         registry.register(new MultiblockIngredientType(), multiblocks, new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
     }
@@ -54,11 +54,11 @@ public class JeiModPlugin implements IModPlugin {
         registration.addRecipes(getMultiblockRecipes(), MultiblockRecipeCategory.UID);
     }
     
-    private Collection<IETemplateMultiblock> getMultiblockRecipes()
+    private Collection<MultiblockWrapper> getMultiblockRecipes()
     {
         return MultiblockHandler.getMultiblocks().stream()
         .filter(item -> item instanceof IETemplateMultiblock)
-        .map(item -> (IETemplateMultiblock)item)
+        .map(item -> new MultiblockWrapper(item))
         .collect(Collectors.toList());
     }
 }

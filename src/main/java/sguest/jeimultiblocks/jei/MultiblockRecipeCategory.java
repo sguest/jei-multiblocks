@@ -10,7 +10,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.immersiveengineering.client.manual.ManualElementMultiblock;
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
 import blusunrize.immersiveengineering.common.items.IEItems;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.SpecialManualElement;
@@ -26,9 +25,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import sguest.jeimultiblocks.MultiblockUtil;
+import sguest.jeimultiblocks.MultiblockWrapper;
 
-public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMultiblock>
+public class MultiblockRecipeCategory implements IRecipeCategory<MultiblockWrapper>
 {
     public static final ResourceLocation UID = new ResourceLocation(Lib.MODID, "multiblock");
     private final IDrawable icon;
@@ -41,11 +40,11 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     }
 
     @Override
-    public void draw(IETemplateMultiblock multiblock, MatrixStack transform, double mouseX, double mouseY)
+    public void draw(MultiblockWrapper multiblock, MatrixStack transform, double mouseX, double mouseY)
     {
         ManualInstance manual = ManualHelper.getManual();
         JsonObject jsonObj = new JsonObject();
-        jsonObj.addProperty("name", multiblock.getUniqueName().toString());
+        jsonObj.addProperty("name", multiblock.getMultiblock().getUniqueName().toString());
         SpecialManualElement manualElement = manual.getElementFactory(new ResourceLocation(Lib.MODID, "multiblock")).apply(jsonObj);
         if(manualElement instanceof ManualElementMultiblock)
         {
@@ -61,8 +60,8 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     }
 
     @Override
-    public Class<? extends IETemplateMultiblock> getRecipeClass() {
-        return IETemplateMultiblock.class;
+    public Class<? extends MultiblockWrapper> getRecipeClass() {
+        return MultiblockWrapper.class;
     }
 
     @Override
@@ -81,19 +80,18 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     }
 
     @Override
-    public void setIngredients(IETemplateMultiblock recipe, IIngredients ingredients) {
-        ItemStack output = MultiblockUtil.getMultiblockItem(recipe);
-        if(!output.isEmpty()) {
-            ingredients.setOutput(VanillaTypes.ITEM, output);
+    public void setIngredients(MultiblockWrapper recipe, IIngredients ingredients) {
+        if(!recipe.getItemStack().isEmpty()) {
+            ingredients.setOutput(VanillaTypes.ITEM, recipe.getItemStack());
         }
         ingredients.setInputIngredients(getBlocks(recipe));
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, IETemplateMultiblock recipe, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout recipeLayout, MultiblockWrapper recipe, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-        ItemStack output = MultiblockUtil.getMultiblockItem(recipe);
+        ItemStack output = recipe.getItemStack();
         int baseIndex = 0;
         if(!output.isEmpty()) {
             guiItemStacks.init(0, false, 2, 2);
@@ -115,8 +113,8 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
         }
     }
 
-    private List<Ingredient> getBlocks(IETemplateMultiblock recipe) {
-        return Arrays.asList(recipe.getTotalMaterials()).stream()
+    private List<Ingredient> getBlocks(MultiblockWrapper recipe) {
+        return Arrays.asList(recipe.getMultiblock().getTotalMaterials()).stream()
         .map(i -> Ingredient.of(i))
         .collect(Collectors.toList());
     }

@@ -1,13 +1,29 @@
 package sguest.jeimultiblocks;
 
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
+import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultiblock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class MultiblockUtil {
-    public static ItemStack getMultiblockItem(IETemplateMultiblock multiblock) {
+public class MultiblockWrapper {
+    private IMultiblock multiblock;
+    private ItemStack itemStack;
+
+    public MultiblockWrapper(IMultiblock multiblock) {
+        this.multiblock = multiblock;
+        this.itemStack = getItem();
+    }
+
+    public IMultiblock getMultiblock() {
+        return multiblock;
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    private ItemStack getItem() {
         /*
             1.18 has IETemplateMultiblock.getBlock(), but in 1.16 I can't find any way to get the multiblocks
             to tell us what their block item is, so we have to go "by convention" on resource location names

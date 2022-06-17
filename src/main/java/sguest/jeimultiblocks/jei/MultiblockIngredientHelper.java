@@ -2,21 +2,20 @@ package sguest.jeimultiblocks.jei;
 
 import javax.annotation.Nullable;
 
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocusFactory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import sguest.jeimultiblocks.MultiblockUtil;
+import sguest.jeimultiblocks.MultiblockWrapper;
 
-public class MultiblockIngredientHelper implements IIngredientHelper<IETemplateMultiblock>
+public class MultiblockIngredientHelper implements IIngredientHelper<MultiblockWrapper>
 {
     @Override
-    public IFocus<?> translateFocus(IFocus<IETemplateMultiblock> focus, IFocusFactory focusFactory) {
-        IETemplateMultiblock multiblock = focus.getValue();
-        ItemStack stack = MultiblockUtil.getMultiblockItem(multiblock);
+    public IFocus<?> translateFocus(IFocus<MultiblockWrapper> focus, IFocusFactory focusFactory) {
+        MultiblockWrapper multiblock = focus.getValue();
+        ItemStack stack = multiblock.getItemStack();
         if(!stack.isEmpty()) {
             return focusFactory.createFocus(focus.getMode(), stack);
         }
@@ -24,59 +23,58 @@ public class MultiblockIngredientHelper implements IIngredientHelper<IETemplateM
     }
 
     @Override
-    public String getDisplayName(IETemplateMultiblock ingredient)
+    public String getDisplayName(MultiblockWrapper ingredient)
     {
-        net.minecraft.item.ItemStack itemIngredient = MultiblockUtil.getMultiblockItem(ingredient);
-        if(itemIngredient.isEmpty()) {
+        if(ingredient.getItemStack().isEmpty()) {
             return I18n.get("jeimultiblocks.nameUnavailable");
         }
-        return I18n.get(itemIngredient.getDescriptionId());
+        return I18n.get(ingredient.getItemStack().getDescriptionId());
     }
 
     @Override
-    public String getUniqueId(IETemplateMultiblock ingredient, UidContext context)
+    public String getUniqueId(MultiblockWrapper ingredient, UidContext context)
     {
-        return ingredient.getUniqueName().toString();
+        return ingredient.getMultiblock().getUniqueName().toString();
     }
 
     @Override
-    public String getUniqueId(IETemplateMultiblock ingredient)
+    public String getUniqueId(MultiblockWrapper ingredient)
     {
-        return ingredient.getUniqueName().toString();
+        return ingredient.getMultiblock().getUniqueName().toString();
     }
 
     @Override
-    public String getModId(IETemplateMultiblock ingredient)
+    public String getModId(MultiblockWrapper ingredient)
     {
-        return ingredient.getUniqueName().getNamespace();
+        return ingredient.getMultiblock().getUniqueName().getNamespace();
     }
 
     @Override
-    public String getResourceId(IETemplateMultiblock ingredient)
+    public String getResourceId(MultiblockWrapper ingredient)
     {
-        return ingredient.getUniqueName().getPath();
+        return ingredient.getMultiblock().getUniqueName().getPath();
     }
 
     @Override
-    public IETemplateMultiblock copyIngredient(IETemplateMultiblock ingredient)
+    public MultiblockWrapper copyIngredient(MultiblockWrapper ingredient)
     {
         return ingredient;
     }
 
     @Override
-    public String getErrorInfo(@Nullable IETemplateMultiblock ingredient)
+    public String getErrorInfo(@Nullable MultiblockWrapper ingredient)
     {
         if(ingredient == null)
         {
             return null;
         }
-        return "Multiblock " + ingredient.getUniqueName();
+        return "Multiblock " + ingredient.getMultiblock().getUniqueName();
     }
 
     @Override
-    public IETemplateMultiblock getMatch(Iterable<IETemplateMultiblock> ingredients, IETemplateMultiblock toMatch) {
-        for(IETemplateMultiblock multiblock : ingredients) {
-            if(multiblock.getUniqueName().equals(toMatch.getUniqueName())) {
+    public MultiblockWrapper getMatch(Iterable<MultiblockWrapper> ingredients, MultiblockWrapper toMatch) {
+        for(MultiblockWrapper multiblock : ingredients) {
+            if(multiblock.getMultiblock().getUniqueName().equals(toMatch.getMultiblock().getUniqueName())) {
                 return multiblock;
             }
         }

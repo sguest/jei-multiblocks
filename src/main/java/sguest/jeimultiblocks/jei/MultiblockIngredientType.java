@@ -1,13 +1,13 @@
 package sguest.jeimultiblocks.jei;
 
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
 import mezz.jei.api.ingredients.IIngredientType;
+import sguest.jeimultiblocks.MultiblockWrapper;
 
-public class MultiblockIngredientType implements IIngredientType<IETemplateMultiblock>
+public class MultiblockIngredientType implements IIngredientType<MultiblockWrapper>
 {
     @Override
-    public Class<? extends IETemplateMultiblock> getIngredientClass()
+    public Class<? extends MultiblockWrapper> getIngredientClass()
     {
-        return IETemplateMultiblock.class;
+        return MultiblockWrapper.class;
     }
 }
