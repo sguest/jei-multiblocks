@@ -4,51 +4,50 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import sguest.jeimultiblocks.MultiblockUtil;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 public class MultiblockIngredientRenderer implements IIngredientRenderer<IETemplateMultiblock>
 {
     @Override
-    public List<ITextComponent> getTooltip(IETemplateMultiblock ingredient, ITooltipFlag tooltipFlag)
+    public List<Component> getTooltip(IETemplateMultiblock ingredient, TooltipFlag tooltipFlag)
     {
-        net.minecraft.item.ItemStack itemIngredient = MultiblockUtil.getMultiblockItem(ingredient);
-        if(itemIngredient.isEmpty()) {
-            return Collections.singletonList(new TranslationTextComponent("jeimultiblocks.nameUnavailable"));
-        }
-        return Collections.singletonList(new TranslationTextComponent(itemIngredient.getDescriptionId()));
+        return Collections.singletonList(new TranslatableComponent(ingredient.getBlock().getDescriptionId()));
     }
     
     @Override
-    public void render(MatrixStack matrixStack, int xPosition, int yPosition, IETemplateMultiblock ingredient)
+    public void render(PoseStack poseStack, IETemplateMultiblock ingredient)
     {
         // lifted from JEI's ItemStackRenderer, since this should just render like normal items
-        if (ingredient != null) {
-            net.minecraft.item.ItemStack itemIngredient = MultiblockUtil.getMultiblockItem(ingredient);
-            if(!itemIngredient.isEmpty()) {
-                RenderSystem.pushMatrix();
-                RenderSystem.multMatrix(matrixStack.last().pose());
+        if (ingredient != null)
+        {
+            PoseStack modelViewStack = RenderSystem.getModelViewStack();
+            modelViewStack.pushPose();
+            {
+                modelViewStack.mulPoseMatrix(poseStack.last().pose());
+                
                 RenderSystem.enableDepthTest();
-                RenderHelper.turnBackOn();
+                
                 Minecraft minecraft = Minecraft.getInstance();
-                FontRenderer font = getFontRenderer(minecraft, ingredient);
+                Font font = getFontRenderer(minecraft, ingredient);
                 ItemRenderer itemRenderer = minecraft.getItemRenderer();
-                itemRenderer.renderAndDecorateFakeItem(itemIngredient, xPosition, yPosition);
-                itemRenderer.renderGuiItemDecorations(font, itemIngredient, xPosition, yPosition);
+                ItemStack stack = new ItemStack(ingredient.getBlock());
+                itemRenderer.renderAndDecorateFakeItem(stack, 0, 0);
+                itemRenderer.renderGuiItemDecorations(font, stack, 0, 0);
                 RenderSystem.disableBlend();
-                RenderHelper.turnOff();
-                RenderSystem.popMatrix();
             }
+            modelViewStack.popPose();
+            // Restore model-view matrix now that the item has been rendered
+            RenderSystem.applyModelViewMatrix();
         }
     }
 }

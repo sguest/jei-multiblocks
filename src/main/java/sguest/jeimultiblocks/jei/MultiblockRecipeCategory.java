@@ -1,32 +1,30 @@
 package sguest.jeimultiblocks.jei;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.ManualHelper;
+import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks;
+import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks.MultiblockManualData;
 import blusunrize.immersiveengineering.client.manual.ManualElementMultiblock;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
-import blusunrize.immersiveengineering.common.items.IEItems;
+import blusunrize.immersiveengineering.common.register.IEItems;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.SpecialManualElement;
 import blusunrize.lib.manual.gui.ManualScreen;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import sguest.jeimultiblocks.MultiblockUtil;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMultiblock>
 {
@@ -37,11 +35,11 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     public MultiblockRecipeCategory(IGuiHelper helper)
     {
         background = helper.createBlankDrawable(176, 108);
-        icon = helper.createDrawableIngredient(new ItemStack(IEItems.Tools.hammer));
+        icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(IEItems.Tools.HAMMER));
     }
-
+    
     @Override
-    public void draw(IETemplateMultiblock multiblock, MatrixStack transform, double mouseX, double mouseY)
+    public void draw(IETemplateMultiblock multiblock, IRecipeSlotsView recipeSlotsView, PoseStack transform, double mouseX, double mouseY)
     {
         ManualInstance manual = ManualHelper.getManual();
         JsonObject jsonObj = new JsonObject();
@@ -54,70 +52,50 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
             ((ManualElementMultiblock)manualElement).render(transform, screen, 30, 20, 0, 0);
         }
     }
-
+    
     @Override
     public ResourceLocation getUid() {
         return UID;
     }
-
+    
     @Override
     public Class<? extends IETemplateMultiblock> getRecipeClass() {
         return IETemplateMultiblock.class;
     }
-
+    
     @Override
-    public String getTitle() {
-        return I18n.get("jeimultiblocks.formMultiblock");
+    public Component getTitle() {
+        return new TranslatableComponent("jeimultiblocks.formMultiblock");
     }
-
+    
     @Override
     public IDrawable getBackground() {
         return background;
     }
-
+    
     @Override
     public IDrawable getIcon() {
         return icon;
     }
-
+    
     @Override
-    public void setIngredients(IETemplateMultiblock recipe, IIngredients ingredients) {
-        ItemStack output = MultiblockUtil.getMultiblockItem(recipe);
-        if(!output.isEmpty()) {
-            ingredients.setOutput(VanillaTypes.ITEM, output);
-        }
-        ingredients.setInputIngredients(getBlocks(recipe));
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, IETemplateMultiblock recipe, IIngredients ingredients) {
-        IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-
-        ItemStack output = MultiblockUtil.getMultiblockItem(recipe);
-        int baseIndex = 0;
-        if(!output.isEmpty()) {
-            guiItemStacks.init(0, false, 2, 2);
-            guiItemStacks.set(0, output);
-            baseIndex = 1;
-        }
-
+    public void setRecipe(IRecipeLayoutBuilder builder, IETemplateMultiblock multiblock, IFocusGroup focuses)
+    {
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 2, 2)
+        .addItemStack(new ItemStack(multiblock.getBlock()));
+        
+        MultiblockManualData manualData = ClientMultiblocks.get(multiblock);
         int y = 2;
         int x = 154;
-        List<Ingredient> outputs = getBlocks(recipe);
-        for(int i = 0; i < outputs.size(); i++) {
-            guiItemStacks.init(i + baseIndex, true, x, y);
-            guiItemStacks.set(i + baseIndex, outputs.get(i).getItems()[0]);
+        for(ItemStack input : manualData.getTotalMaterials())
+        {
+            builder.addSlot(RecipeIngredientRole.INPUT, x, y)
+            .addItemStack(input);
             y += 20;
             if(y > 100) {
                 y = 2;
                 x -= 20;
             }
         }
-    }
-
-    private List<Ingredient> getBlocks(IETemplateMultiblock recipe) {
-        return Arrays.asList(recipe.getTotalMaterials()).stream()
-        .map(i -> Ingredient.of(i))
-        .collect(Collectors.toList());
     }
 }
