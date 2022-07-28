@@ -7,9 +7,7 @@ import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks;
 import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks.MultiblockManualData;
-import blusunrize.immersiveengineering.client.manual.ManualElementMultiblock;
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
-import blusunrize.immersiveengineering.common.register.IEItems;
+import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultiblock;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.SpecialManualElement;
 import blusunrize.lib.manual.gui.ManualScreen;
@@ -25,8 +23,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import sguest.jeimultiblocks.ContentHelper;
 
-public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMultiblock>
+public class MultiblockRecipeCategory implements IRecipeCategory<IMultiblock>
 {
     public static final ResourceLocation UID = new ResourceLocation(Lib.MODID, "multiblock");
     private final IDrawable icon;
@@ -35,22 +34,19 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     public MultiblockRecipeCategory(IGuiHelper helper)
     {
         background = helper.createBlankDrawable(176, 108);
-        icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(IEItems.Tools.HAMMER));
+        icon = helper.createDrawableIngredient(VanillaTypes.ITEM, ContentHelper.getHammer());
     }
     
     @Override
-    public void draw(IETemplateMultiblock multiblock, IRecipeSlotsView recipeSlotsView, PoseStack transform, double mouseX, double mouseY)
+    public void draw(IMultiblock multiblock, IRecipeSlotsView recipeSlotsView, PoseStack transform, double mouseX, double mouseY)
     {
         ManualInstance manual = ManualHelper.getManual();
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("name", multiblock.getUniqueName().toString());
         SpecialManualElement manualElement = manual.getElementFactory(new ResourceLocation(Lib.MODID, "multiblock")).apply(jsonObj);
-        if(manualElement instanceof ManualElementMultiblock)
-        {
-            ManualScreen screen = ManualHelper.getManual().getGui();
-            // Passing 0, 0 for mouse coords because we don't want to render the manual's ingredient list tooltip
-            ((ManualElementMultiblock)manualElement).render(transform, screen, 30, 20, 0, 0);
-        }
+        ManualScreen screen = ManualHelper.getManual().getGui();
+        // Passing 0, 0 for mouse coords because we don't want to render the manual's ingredient list tooltip
+        manualElement.render(transform, screen, 30, 20, 0, 0);
     }
     
     @Override
@@ -59,8 +55,8 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     }
     
     @Override
-    public Class<? extends IETemplateMultiblock> getRecipeClass() {
-        return IETemplateMultiblock.class;
+    public Class<? extends IMultiblock> getRecipeClass() {
+        return IMultiblock.class;
     }
     
     @Override
@@ -79,7 +75,7 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IETemplateMulti
     }
     
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, IETemplateMultiblock multiblock, IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, IMultiblock multiblock, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.OUTPUT, 2, 2)
         .addItemStack(new ItemStack(multiblock.getBlock()));

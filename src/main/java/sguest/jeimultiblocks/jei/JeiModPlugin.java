@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler;
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
-import blusunrize.immersiveengineering.common.register.IEItems;
+import blusunrize.immersiveengineering.api.multiblocks.TemplateMultiblock;
+import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultiblock;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -14,7 +14,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import sguest.jeimultiblocks.ContentHelper;
 import sguest.jeimultiblocks.JeiMultiblocks;
 
 @JeiPlugin
@@ -34,7 +34,7 @@ public class JeiModPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
-        registration.addRecipeCatalyst(new ItemStack(IEItems.Tools.HAMMER), MultiblockRecipeCategory.UID);
+        registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.UID);
     }
 
     @Override
@@ -50,11 +50,10 @@ public class JeiModPlugin implements IModPlugin {
         registration.addRecipes(getMultiblockRecipes(), MultiblockRecipeCategory.UID);
     }
     
-    private Collection<IETemplateMultiblock> getMultiblockRecipes()
+    private Collection<IMultiblock> getMultiblockRecipes()
     {
         return MultiblockHandler.getMultiblocks().stream()
-        .filter(item -> item instanceof IETemplateMultiblock)
-        .map(item -> (IETemplateMultiblock)item)
+        .filter(item -> item instanceof TemplateMultiblock)
         .collect(Collectors.toList());
     }
 }

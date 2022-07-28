@@ -2,51 +2,51 @@ package sguest.jeimultiblocks.jei;
 
 import javax.annotation.Nullable;
 
-import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
+import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultiblock;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 
-public class MultiblockIngredientHelper implements IIngredientHelper<IETemplateMultiblock>
+public class MultiblockIngredientHelper implements IIngredientHelper<IMultiblock>
 {
     @Override
-    public IIngredientType<IETemplateMultiblock> getIngredientType()
+    public IIngredientType<IMultiblock> getIngredientType()
     {
         return new MultiblockIngredientType();
     }
     
     @Override
-    public String getDisplayName(IETemplateMultiblock ingredient)
+    public String getDisplayName(IMultiblock ingredient)
     {
         return ingredient.getDisplayName().toString();
     }
     
     @Override
-    public String getUniqueId(IETemplateMultiblock ingredient, UidContext context)
+    public String getUniqueId(IMultiblock ingredient, UidContext context)
     {
         return ingredient.getBlock().getRegistryName().toString();
     }
     
     @Override
-    public String getModId(IETemplateMultiblock ingredient)
+    public String getModId(IMultiblock ingredient)
     {
         return ingredient.getUniqueName().getNamespace();
     }
     
     @Override
-    public String getResourceId(IETemplateMultiblock ingredient)
+    public String getResourceId(IMultiblock ingredient)
     {
         return ingredient.getUniqueName().getPath();
     }
     
     @Override
-    public IETemplateMultiblock copyIngredient(IETemplateMultiblock ingredient)
+    public IMultiblock copyIngredient(IMultiblock ingredient)
     {
         return ingredient;
     }
     
     @Override
-    public String getErrorInfo(@Nullable IETemplateMultiblock ingredient)
+    public String getErrorInfo(@Nullable IMultiblock ingredient)
     {
         if(ingredient == null)
         {
