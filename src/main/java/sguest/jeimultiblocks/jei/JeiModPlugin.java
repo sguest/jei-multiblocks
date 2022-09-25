@@ -1,6 +1,7 @@
 package sguest.jeimultiblocks.jei;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler;
@@ -19,7 +20,6 @@ import sguest.jeimultiblocks.JeiMultiblocks;
 
 @JeiPlugin
 public class JeiModPlugin implements IModPlugin {
-    
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
@@ -34,7 +34,7 @@ public class JeiModPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
-        registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.UID);
+        registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.recipeType);
     }
 
     @Override
@@ -47,10 +47,10 @@ public class JeiModPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration)
     {
-        registration.addRecipes(getMultiblockRecipes(), MultiblockRecipeCategory.UID);
+        registration.addRecipes(MultiblockRecipeCategory.recipeType, getMultiblockRecipes());
     }
     
-    private Collection<IMultiblock> getMultiblockRecipes()
+    private List<IMultiblock> getMultiblockRecipes()
     {
         return MultiblockHandler.getMultiblocks().stream()
         .filter(item -> item instanceof TemplateMultiblock)

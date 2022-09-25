@@ -6,6 +6,9 @@ import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultib
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MultiblockIngredientHelper implements IIngredientHelper<IMultiblock>
 {
@@ -24,21 +27,15 @@ public class MultiblockIngredientHelper implements IIngredientHelper<IMultiblock
     @Override
     public String getUniqueId(IMultiblock ingredient, UidContext context)
     {
-        return ingredient.getBlock().getRegistryName().toString();
+        return ForgeRegistries.BLOCKS.getKey(ingredient.getBlock()).toString();
     }
-    
+
     @Override
-    public String getModId(IMultiblock ingredient)
+    public ResourceLocation getResourceLocation(IMultiblock ingredient)
     {
-        return ingredient.getUniqueName().getNamespace();
+        return ingredient.getUniqueName();
     }
-    
-    @Override
-    public String getResourceId(IMultiblock ingredient)
-    {
-        return ingredient.getUniqueName().getPath();
-    }
-    
+
     @Override
     public IMultiblock copyIngredient(IMultiblock ingredient)
     {

@@ -18,23 +18,24 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import sguest.jeimultiblocks.ContentHelper;
+import sguest.jeimultiblocks.JeiMultiblocks;
 
 public class MultiblockRecipeCategory implements IRecipeCategory<IMultiblock>
 {
-    public static final ResourceLocation UID = new ResourceLocation(Lib.MODID, "multiblock");
+    public static final RecipeType<IMultiblock> recipeType = new RecipeType<IMultiblock>(new ResourceLocation(JeiMultiblocks.MODID, "multiblock"), IMultiblock.class);
     private final IDrawable icon;
     private final IDrawable background;
     
     public MultiblockRecipeCategory(IGuiHelper helper)
     {
         background = helper.createBlankDrawable(176, 108);
-        icon = helper.createDrawableIngredient(VanillaTypes.ITEM, ContentHelper.getHammer());
+        icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, ContentHelper.getHammer());
     }
     
     @Override
@@ -48,20 +49,15 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IMultiblock>
         // Passing 0, 0 for mouse coords because we don't want to render the manual's ingredient list tooltip
         manualElement.render(transform, screen, 30, 20, 0, 0);
     }
-    
+
     @Override
-    public ResourceLocation getUid() {
-        return UID;
+    public RecipeType<IMultiblock> getRecipeType() {
+        return recipeType;
     }
-    
-    @Override
-    public Class<? extends IMultiblock> getRecipeClass() {
-        return IMultiblock.class;
-    }
-    
+
     @Override
     public Component getTitle() {
-        return new TranslatableComponent("jeimultiblocks.formMultiblock");
+        return Component.translatable("jeimultiblocks.formMultiblock");
     }
     
     @Override
