@@ -2,7 +2,7 @@
 modLoader="javafml"
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
 #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
-loaderVersion="[43,)"
+loaderVersion="${loader_version_range}"
 issueTrackerURL="https://github.com/sguest/jei-multiblocks/issues"
 license="MIT"
 [[mods]]

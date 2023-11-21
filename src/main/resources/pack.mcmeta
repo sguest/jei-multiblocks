@@ -1,8 +1,8 @@
 {
     "pack": {
-        "description": "Just Enough Immersive Multiblocks Resources",
-        "pack_format": 9,
-        "forge:resource_pack_format": 9,
-        "forge:data_pack_format": 10
+        "description": {
+            "text": "Just Enough Immersive Multiblocks Resources"
+        },
+        "pack_format": 15
     }
 }

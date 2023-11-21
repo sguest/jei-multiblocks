@@ -20,40 +20,40 @@ import sguest.jeimultiblocks.JeiMultiblocks;
 
 @JeiPlugin
 public class JeiModPlugin implements IModPlugin {
-    @Override
-    public ResourceLocation getPluginUid() {
-        return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
-    }
+     @Override
+     public ResourceLocation getPluginUid() {
+         return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
+     }
     
-    @Override
-    public void registerIngredients(IModIngredientRegistration registry)
-    {
-        registry.register(new MultiblockIngredientType(), getMultiblockRecipes(), new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
-    }
+     @Override
+     public void registerIngredients(IModIngredientRegistration registry)
+     {
+         registry.register(new MultiblockIngredientType(), getMultiblockRecipes(), new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
+     }
 
-    @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
-    {
-        registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.recipeType);
-    }
+     @Override
+     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
+     {
+         registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.recipeType);
+     }
 
-    @Override
-    public void registerCategories(IRecipeCategoryRegistration registry)
-    {
-        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-        registry.addRecipeCategories(new MultiblockRecipeCategory(guiHelper));
-    }
+     @Override
+     public void registerCategories(IRecipeCategoryRegistration registry)
+     {
+         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+         registry.addRecipeCategories(new MultiblockRecipeCategory(guiHelper));
+     }
 
-    @Override
-    public void registerRecipes(IRecipeRegistration registration)
-    {
-        registration.addRecipes(MultiblockRecipeCategory.recipeType, getMultiblockRecipes());
-    }
+     @Override
+     public void registerRecipes(IRecipeRegistration registration)
+     {
+         registration.addRecipes(MultiblockRecipeCategory.recipeType, getMultiblockRecipes());
+     }
     
-    private List<IMultiblock> getMultiblockRecipes()
-    {
-        return MultiblockHandler.getMultiblocks().stream()
-        .filter(item -> item instanceof TemplateMultiblock)
-        .collect(Collectors.toList());
-    }
+     private List<IMultiblock> getMultiblockRecipes()
+     {
+         return MultiblockHandler.getMultiblocks().stream()
+         .filter(item -> item instanceof TemplateMultiblock)
+         .collect(Collectors.toList());
+     }
 }
