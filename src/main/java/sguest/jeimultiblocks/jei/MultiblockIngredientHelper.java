@@ -1,14 +1,13 @@
  package sguest.jeimultiblocks.jei;
 
- import javax.annotation.Nullable;
-
  import blusunrize.immersiveengineering.api.multiblocks.MultiblockHandler.IMultiblock;
  import mezz.jei.api.ingredients.IIngredientHelper;
  import mezz.jei.api.ingredients.IIngredientType;
  import mezz.jei.api.ingredients.subtypes.UidContext;
  import net.minecraft.resources.ResourceLocation;
- import net.minecraft.world.level.block.Block;
  import net.minecraftforge.registries.ForgeRegistries;
+
+ import javax.annotation.Nullable;
 
  public class MultiblockIngredientHelper implements IIngredientHelper<IMultiblock>
  {

@@ -1,8 +1,5 @@
  package sguest.jeimultiblocks.jei;
 
- import com.google.gson.JsonObject;
- import com.mojang.blaze3d.vertex.PoseStack;
-
  import blusunrize.immersiveengineering.api.Lib;
  import blusunrize.immersiveengineering.api.ManualHelper;
  import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks;
@@ -11,6 +8,7 @@
  import blusunrize.lib.manual.ManualInstance;
  import blusunrize.lib.manual.SpecialManualElement;
  import blusunrize.lib.manual.gui.ManualScreen;
+ import com.google.gson.JsonObject;
  import mezz.jei.api.constants.VanillaTypes;
  import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
  import mezz.jei.api.gui.drawable.IDrawable;
@@ -80,6 +78,7 @@
          MultiblockManualData manualData = ClientMultiblocks.get(multiblock);
          int y = 2;
          int x = 154;
+
          for(ItemStack input : manualData.getTotalMaterials())
          {
              builder.addSlot(RecipeIngredientRole.INPUT, x, y)
