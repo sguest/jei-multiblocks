@@ -1,6 +1,6 @@
 package sguest.jeimultiblocks;
 
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
 
 @Mod(JeiMultiblocks.MODID)
 public class JeiMultiblocks {

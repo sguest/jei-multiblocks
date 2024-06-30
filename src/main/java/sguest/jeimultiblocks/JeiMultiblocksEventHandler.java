@@ -1,9 +1,9 @@
 package sguest.jeimultiblocks;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
 import java.util.concurrent.Callable;
 
@@ -17,7 +17,7 @@ public class JeiMultiblocksEventHandler {
     }
 
     @SubscribeEvent
-    public static void gameTicked(TickEvent event) {
+    public static void gameTicked(ClientTickEvent event) {
         if(callback == null || event.side.isServer()) return;
         try {
             callback.call();
