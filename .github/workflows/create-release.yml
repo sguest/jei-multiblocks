@@ -84,6 +84,6 @@ jobs:
           relations: u6dRKJwZ:required,tIm2nV03:required
           game_versions: 1.20.4
           release_type: release
-          loaders: NeoForge
+          loaders: neoforge
           featured: true
           project_id: ffLYPaWN
