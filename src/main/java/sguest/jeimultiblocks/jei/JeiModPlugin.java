@@ -18,35 +18,37 @@ import sguest.jeimultiblocks.JeiMultiblocksEventHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+
 @JeiPlugin
 public class JeiModPlugin implements IModPlugin {
 
-     @Override
-     public ResourceLocation getPluginUid() {
-         return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
-     }
-
-     @Override
-     public void registerIngredients(IModIngredientRegistration registry)
-     {
-         registry.register(new MultiblockIngredientType(), getMultiblockRecipes(), new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
-     }
-
-     @Override
-     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
-     {
-         registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.recipeType);
-     }
-
-     @Override
-     public void registerCategories(IRecipeCategoryRegistration registry)
-     {
-         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-         registry.addRecipeCategories(new MultiblockRecipeCategory(guiHelper));
-     }
+    @Override
+    public ResourceLocation getPluginUid() {
+        return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
+    }
 
     @Override
-    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+    public void registerIngredients(@Nonnull IModIngredientRegistration registry)
+    {
+        registry.register(new MultiblockIngredientType(), getMultiblockRecipes(), new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
+    }
+
+    @Override
+    public void registerRecipeCatalysts(@Nonnull IRecipeCatalystRegistration registration)
+    {
+        registration.addRecipeCatalyst(ContentHelper.getHammer(), MultiblockRecipeCategory.recipeType);
+    }
+
+    @Override
+    public void registerCategories(@Nonnull IRecipeCategoryRegistration registry)
+    {
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        registry.addRecipeCategories(new MultiblockRecipeCategory(guiHelper));
+    }
+
+    @Override
+    public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
 
         JeiMultiblocksEventHandler.registerCallback(() -> {
             jeiRuntime.getRecipeManager().addRecipes(MultiblockRecipeCategory.recipeType, getMultiblockRecipes());
@@ -56,9 +58,9 @@ public class JeiModPlugin implements IModPlugin {
     }
 
     private List<IMultiblock> getMultiblockRecipes()
-     {
-         return MultiblockHandler.getMultiblocks().stream()
-         .filter(item -> item instanceof TemplateMultiblock)
-         .collect(Collectors.toList());
-     }
+    {
+        return MultiblockHandler.getMultiblocks().stream()
+        .filter(item -> item instanceof TemplateMultiblock)
+        .collect(Collectors.toList());
+    }
 }
