@@ -14,7 +14,7 @@ on:
         type: 'boolean'
         default: true
       publish-to-modrinth:
-        description: Public mod to Modrinth
+        description: Publish mod to Modrinth
         required: false
         type: 'boolean'
         default: true
@@ -75,9 +75,15 @@ jobs:
 
       - name: Publish to Modrinth
         if: ${{ inputs.publish-to-modrinth }}
-        uses: cloudnode-pro/modrinth-publish@1.0.0
+        uses: RubixDev/modrinth-upload@v1
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
-          project: jei-multiblocks
-          file: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
+          file_path: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
+          name: jeimultiblocks-${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}.jar
+          version: ${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}
+          relations: u6dRKJwZ:required,tIm2nV03:required
+          game_versions: 1.20.4
+          release_type: release
           loaders: NeoForge
+          featured: true
+          project_id: ffLYPaWN
