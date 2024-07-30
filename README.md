@@ -24,3 +24,4 @@ Multiblock recipes show basic structure and ingredients
 ### Anything older than 1.16
 
 - Backports to older versions will not happen. Please do not ask unless you personally are prepared to do the port and maintain it.
+- Independent backport to 1.12.2 exists as [Rather Enough Immersive Multiblocks](https://legacy.curseforge.com/minecraft/mc-mods/rather-enough-immersive-multiblocks)
