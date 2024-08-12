@@ -14,7 +14,6 @@ Multiblock recipes show basic structure and ingredients
 
 ### 1.20.1
 
-- For Minecraft 1.20.1, Immersive Engineering switched to NeoForge loader but JEI did not. The CurseForge client will not add Forge mods to a NeoForged instance or vice versa, despite both versions being effectively identical. To use this mod in 1.20.1, you must create a Forge instance and add IE manually by downloading the mod and dragging it to the mods folder. CurseForge will display a warning saying the version is incompatible, but from testing it seems to work fine.
 - Huge thanks to [FLORIAN4600](https://github.com/FLORIAN4600) for overcoming some nasty lifecycle issues and allowing this mod to live on into 1.20+ of Minecraft
 
 ### 1.16
