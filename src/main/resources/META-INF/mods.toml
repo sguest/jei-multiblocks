@@ -16,7 +16,7 @@ credits="The Immersive Engineering team for a great base mod and source of sampl
 [[dependencies.jeimultiblocks]]
     modId="forge"
     mandatory=true
-    versionRange="[${forge_version},)"
+    versionRange="${loader_version_range}"
     ordering="NONE"
     side="BOTH"
 
