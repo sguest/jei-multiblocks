@@ -1,0 +1,89 @@
+name: Create Release and Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      create-github-release:
+        description: Build and create GitHub release
+        required: false
+        type: 'boolean'
+        default: true
+      publish-to-curseforge:
+        description: Publish mod to CurseForge
+        required: false
+        type: 'boolean'
+        default: true
+      publish-to-modrinth:
+        description: Publish mod to Modrinth
+        required: false
+        type: 'boolean'
+        default: true
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          arguments: build
+      
+      - name: Get Version
+        id: get-version
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: ./gradle.properties
+          properties: 'mc_version mc_version_base mod_version'
+      
+      - name: Create GitHub Release
+        if: ${{ inputs.create-github-release }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
+          commit: main
+          tag: v${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
+          name: v${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
+          body: Mod version ${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
+
+      - name: Publish to CurseForge
+        if: ${{ inputs.publish-to-curseforge }}
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          file_path: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
+          game_endpoint: minecraft
+          relations: "immersive-engineering:requiredDependency,jei:requiredDependency"
+          game_versions: "Minecraft ${{ steps.get-version.outputs.mc_version_base }}:${{ steps.get-version.outputs.mc_version }},Java 17,NeoForge"
+          project_id: 634571
+          release_type: release
+          token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+      - name: Publish to Modrinth
+        if: ${{ inputs.publish-to-modrinth }}
+        uses: RubixDev/modrinth-upload@v1
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          file_path: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
+          name: jeimultiblocks-${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}.jar
+          version: ${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
+          relations: u6dRKJwZ:required,tIm2nV03:required
+          game_versions: ${{ steps.get-version.outputs.mc_version }}
+          release_type: release
+          loaders: neoforge
+          featured: true
+          project_id: ffLYPaWN
