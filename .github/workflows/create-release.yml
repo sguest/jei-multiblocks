@@ -82,7 +82,7 @@ jobs:
           name: jeimultiblocks-${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}.jar
           version: ${{ steps.get-version.outputs.minecraft_version }}-${{ steps.get-version.outputs.mod_version }}
           relations: u6dRKJwZ:required,tIm2nV03:required
-          game_versions: 1.20.4
+          game_versions: ${{ steps.get-version.outputs.minecraft_version }}
           release_type: release
           loaders: neoforge
           featured: true
