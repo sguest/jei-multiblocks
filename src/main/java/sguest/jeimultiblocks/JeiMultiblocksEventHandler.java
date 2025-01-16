@@ -1,13 +1,13 @@
 package sguest.jeimultiblocks;
 
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
 
 import java.util.concurrent.Callable;
 
-@Mod.EventBusSubscriber(modid = JeiMultiblocks.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@EventBusSubscriber(modid = JeiMultiblocks.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class JeiMultiblocksEventHandler {
 
     private static Callable<Boolean> callback = null;
@@ -17,8 +17,8 @@ public class JeiMultiblocksEventHandler {
     }
 
     @SubscribeEvent
-    public static void gameTicked(ClientTickEvent event) {
-        if(callback == null || event.side.isServer()) return;
+    public static void gameTicked(ClientTickEvent.Pre event) {
+        if(callback == null) return;
         try {
             callback.call();
             callback = null;
