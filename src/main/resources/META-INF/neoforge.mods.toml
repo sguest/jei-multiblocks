@@ -102,7 +102,7 @@ description='''${mod_description}'''
 [[dependencies.jeimultiblocks]]
     modId="immersiveengineering"
     type="required"
-    versionRange="[${ie_version},)"
+    versionRange="[${ie_version_dependency},)"
     ordering="BEFORE"
     side="BOTH"
 

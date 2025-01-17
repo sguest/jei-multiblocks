@@ -135,6 +135,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             ie_version             : ie_version,
+            ie_version_dependency  : ie_version_dependency,
             jei_version            : jei_version
     ]
     inputs.properties replaceProperties
