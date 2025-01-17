@@ -30,7 +30,7 @@ import sguest.jeimultiblocks.JeiMultiblocks;
 
 public class MultiblockRecipeCategory implements IRecipeCategory<IMultiblock>
 {
-    public static final RecipeType<IMultiblock> recipeType = new RecipeType<IMultiblock>(new ResourceLocation(JeiMultiblocks.MODID, "multiblock"), IMultiblock.class);
+    public static final RecipeType<IMultiblock> recipeType = new RecipeType<IMultiblock>(ResourceLocation.fromNamespaceAndPath(JeiMultiblocks.MODID, "multiblock"), IMultiblock.class);
     private final IDrawable icon;
     private final IDrawable background;
 
@@ -46,7 +46,7 @@ public class MultiblockRecipeCategory implements IRecipeCategory<IMultiblock>
         ManualInstance manual = ManualHelper.getManual();
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("name", multiblock.getUniqueName().toString());
-        SpecialManualElement manualElement = manual.getElementFactory(new ResourceLocation(Lib.MODID, "multiblock")).apply(jsonObj);
+        SpecialManualElement manualElement = manual.getElementFactory(ResourceLocation.fromNamespaceAndPath(Lib.MODID, "multiblock")).apply(jsonObj);
         ManualScreen screen = ManualHelper.getManual().getGui();
         // Passing 0, 0 for mouse coords because we don't want to render the manual's ingredient list tooltip
         manualElement.render(guiGraphics, screen, 30, 20, 0, 0);

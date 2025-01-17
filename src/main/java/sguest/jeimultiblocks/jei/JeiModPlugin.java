@@ -25,7 +25,7 @@ public class JeiModPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(JeiMultiblocks.MODID, "plugin");
+        return ResourceLocation.fromNamespaceAndPath(JeiMultiblocks.MODID, "plugin");
     }
 
     @Override
