@@ -6,11 +6,12 @@ import blusunrize.immersiveengineering.api.multiblocks.TemplateMultiblock;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IExtraIngredientRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import sguest.jeimultiblocks.ContentHelper;
 import sguest.jeimultiblocks.JeiMultiblocks;
 import sguest.jeimultiblocks.JeiMultiblocksEventHandler;
@@ -29,9 +30,8 @@ public class JeiModPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerIngredients(@Nonnull IModIngredientRegistration registry)
-    {
-        registry.register(new MultiblockIngredientType(), getMultiblockRecipes(), new MultiblockIngredientHelper(), new MultiblockIngredientRenderer());
+    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
+        registration.addExtraItemStacks(getMultiblockItems());
     }
 
     @Override
@@ -61,6 +61,15 @@ public class JeiModPlugin implements IModPlugin {
     {
         return MultiblockHandler.getMultiblocks().stream()
         .filter(item -> item instanceof TemplateMultiblock)
+        .collect(Collectors.toList());
+    }
+
+    
+    private List<ItemStack> getMultiblockItems()
+    {
+        return MultiblockHandler.getMultiblocks().stream()
+        .filter(item -> item instanceof TemplateMultiblock)
+        .map(item -> new ItemStack(item.getBlock()))
         .collect(Collectors.toList());
     }
 }
