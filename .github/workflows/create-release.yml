@@ -68,7 +68,7 @@ jobs:
           file_path: "./build/libs/jeimultiblocks-${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}.jar"
           game_endpoint: minecraft
           relations: "immersive-engineering:requiredDependency,jei:requiredDependency"
-          game_versions: "Minecraft ${{ steps.get-version.outputs.mc_version_base }}:${{ steps.get-version.outputs.mc_version }},Java 17,NeoForge"
+          game_versions: "Minecraft ${{ steps.get-version.outputs.mc_version_base }}:${{ steps.get-version.outputs.mc_version }},Java 17,NeoForge,Forge"
           project_id: 634571
           release_type: release
           token: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -84,6 +84,6 @@ jobs:
           relations: u6dRKJwZ:required,tIm2nV03:required
           game_versions: ${{ steps.get-version.outputs.mc_version }}
           release_type: release
-          loaders: neoforge
+          loaders: neoforge,forge
           featured: true
           project_id: ffLYPaWN
