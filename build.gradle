@@ -141,7 +141,8 @@ dependencies {
         runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
     } else if (recipe_viewer.toString().equals("emi")) {
         runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
-        runtimeOnly fg.deobf("maven.modrinth:tmrv:0.6.4+mc.20.1")
+        if (include_tmrv.toBoolean())
+            runtimeOnly fg.deobf("maven.modrinth:tmrv:0.6.4+mc.20.1")
     }
 }
 
