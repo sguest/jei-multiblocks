@@ -108,7 +108,14 @@ description='''${mod_description}'''
 
 [[dependencies.jeimultiblocks]]
     modId="jei"
-    type="required"
+    type="optional"
     versionRange="[${jei_version},)"
+    ordering="BEFORE"
+    side="BOTH"
+
+[[dependencies.jeimultiblocks]]
+    modId="emi"
+    type="optional"
+    versionRange="[${emi_version},)"
     ordering="BEFORE"
     side="BOTH"

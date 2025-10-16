@@ -12,6 +12,8 @@ group = mod_group_id
 repositories {
     mavenLocal()
     maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }         //IE and JEI
+    maven {	name = "TerraformersMC";	url = "https://maven.terraformersmc.com/" }        //EMI
+    maven { name = "Modrinth";      url = "https://api.modrinth.com/maven" } // TMRV
 }
 
 base {
@@ -99,7 +101,15 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    if (recipe_viewer.toString().equals("jei")) {
+        localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    } else if (recipe_viewer.toString().equals("emi")) {
+        localRuntime "dev.emi:emi-neoforge:${emi_version}"
+        if (include_tmrv.toBoolean())
+            localRuntime "maven.modrinth:tmrv:0.6.4+mc.21.1"
+    }
+
+    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
@@ -136,7 +146,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_description        : mod_description,
             ie_version             : ie_version,
             ie_version_dependency  : ie_version_dependency,
-            jei_version            : jei_version
+            jei_version            : jei_version,
+            emi_version            : emi_version
     ]
     inputs.properties replaceProperties
 
