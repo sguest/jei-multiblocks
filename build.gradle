@@ -106,6 +106,8 @@ repositories {
     //     dir 'libs'
     // }
     maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }         //IE and JEI
+    maven {	name = "TerraformersMC";	url = "https://maven.terraformersmc.com/" }        //EMI
+    maven { name = "Modrinth";      url = "https://api.modrinth.com/maven" } // TMRV
 }
 
 dependencies {
@@ -132,8 +134,15 @@ dependencies {
     // Adds JEI API as a compile dependency
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
+    // Compile against both JEI and EMI
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
     // Adds the full JEI mod as a runtime dependency
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    if (recipe_viewer.toString().equals("jei")) {
+        runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    } else if (recipe_viewer.toString().equals("emi")) {
+        runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
+        runtimeOnly fg.deobf("maven.modrinth:tmrv:0.6.4+mc.20.1")
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {
