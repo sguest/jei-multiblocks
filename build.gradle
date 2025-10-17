@@ -13,7 +13,6 @@ repositories {
     mavenLocal()
     maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }         //IE and JEI
     maven {	name = "TerraformersMC";	url = "https://maven.terraformersmc.com/" }        //EMI
-    maven { name = "Modrinth";      url = "https://api.modrinth.com/maven" } // TMRV
 }
 
 base {
@@ -100,16 +99,16 @@ dependencies {
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+
+    // EMI API compile-time use
+    compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
+
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
     if (recipe_viewer.toString().equals("jei")) {
         localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     } else if (recipe_viewer.toString().equals("emi")) {
-        localRuntime "dev.emi:emi-neoforge:${emi_version}"
-        if (include_tmrv.toBoolean())
-            localRuntime "maven.modrinth:tmrv:0.6.4+mc.21.1"
+        localRuntime "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"
     }
-
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

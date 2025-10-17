@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import sguest.jeimultiblocks.ContentHelper;
 import sguest.jeimultiblocks.JeiMultiblocks;
+import sguest.jeimultiblocks.MultiblockUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,28 +30,12 @@ public class EmiModPlugin implements EmiPlugin {
         // Add all the workstations your category uses
         emiRegistry.addWorkstation(MULTIBLOCK_CATEGORY, HAMMER);
 
-        for (MultiblockHandler.IMultiblock multiblock : getMultiblockRecipes()) {
+        for (MultiblockHandler.IMultiblock multiblock : MultiblockUtils.getMultiblockRecipes()) {
             emiRegistry.addRecipe(new EmiMultiblockRecipe(multiblock));
         }
 
-        for (ItemStack multiblockItem : getMultiblockItems()) {
+        for (ItemStack multiblockItem : MultiblockUtils.getMultiblockItems()) {
             emiRegistry.addEmiStack(EmiStack.of(multiblockItem));
         }
-    }
-
-    private List<MultiblockHandler.IMultiblock> getMultiblockRecipes()
-    {
-        return MultiblockHandler.getMultiblocks().stream()
-                .filter(item -> item instanceof TemplateMultiblock)
-                .collect(Collectors.toList());
-    }
-
-
-    private List<ItemStack> getMultiblockItems()
-    {
-        return MultiblockHandler.getMultiblocks().stream()
-                .filter(item -> item instanceof TemplateMultiblock)
-                .map(item -> new ItemStack(item.getBlock()))
-                .collect(Collectors.toList());
     }
 }

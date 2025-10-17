@@ -10,11 +10,14 @@ Multiblock recipes show basic structure and ingredients
 
 ![Arc Furnace](readme-images/arc-furnace.png)
 
+Also supports [EMI](https://www.curseforge.com/minecraft/mc-mods/emi) as a first-class plugin, no compatibility loaders required.
+
 ## Specific version notes
 
 ### 1.20.1
 
 - Huge thanks to [FLORIAN4600](https://github.com/FLORIAN4600) for overcoming some nasty lifecycle issues and allowing this mod to live on into 1.20+ of Minecraft
+- Thank you [Pengy](https://github.com/PengyTheGamer) for EMI support
 
 ### 1.16
 
