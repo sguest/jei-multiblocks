@@ -106,6 +106,7 @@ repositories {
     //     dir 'libs'
     // }
     maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }         //IE and JEI
+    maven {	name = "TerraformersMC";	url = "https://maven.terraformersmc.com/" }        //EMI
 }
 
 dependencies {
@@ -132,9 +133,16 @@ dependencies {
     // Adds JEI API as a compile dependency
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    // Adds the full JEI mod as a runtime dependency
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-}
+
+    // EMI API compile-time use
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${mc_version}:api")
+
+    // Adds the full mod as a runtime dependency
+    if (recipe_viewer.toString().equals("jei")) {
+        runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    } else if (recipe_viewer.toString().equals("emi")) {
+        runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${mc_version}")
+    }}
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
