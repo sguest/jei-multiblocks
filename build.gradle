@@ -12,6 +12,7 @@ group = mod_group_id
 repositories {
     mavenLocal()
     maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }         //IE and JEI
+    maven {	name = "TerraformersMC";	url = "https://maven.terraformersmc.com/" }        //EMI
 }
 
 base {
@@ -98,9 +99,16 @@ dependencies {
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
+    // EMI API compile-time use
+    compileOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}:api"
+
+    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
+    if (recipe_viewer.toString().equals("jei")) {
+        localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    } else if (recipe_viewer.toString().equals("emi")) {
+        localRuntime "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"
+    }
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
@@ -135,7 +143,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             ie_version             : ie_version,
-            jei_version            : jei_version
+            jei_version            : jei_version,
+            emi_version            : emi_version
     ]
     inputs.properties replaceProperties
 
