@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import sguest.jeimultiblocks.ContentHelper;
 import sguest.jeimultiblocks.JeiMultiblocks;
 import sguest.jeimultiblocks.JeiMultiblocksEventHandler;
+import sguest.jeimultiblocks.MultiblockUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,27 +47,10 @@ public class JeiModPlugin implements IModPlugin {
     public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
 
         JeiMultiblocksEventHandler.registerCallback(() -> {
-            jeiRuntime.getRecipeManager().addRecipes(MultiblockRecipeCategory.recipeType, getMultiblockRecipes());
+            jeiRuntime.getRecipeManager().addRecipes(MultiblockRecipeCategory.recipeType, MultiblockUtils.getMultiblockRecipes());
             return true;
         });
 
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, getMultiblockItems());
-
-    }
-
-    private List<IMultiblock> getMultiblockRecipes()
-    {
-        return MultiblockHandler.getMultiblocks().stream()
-        .filter(item -> item instanceof TemplateMultiblock)
-        .collect(Collectors.toList());
-    }
-
-    
-    private List<ItemStack> getMultiblockItems()
-    {
-        return MultiblockHandler.getMultiblocks().stream()
-        .filter(item -> item instanceof TemplateMultiblock)
-        .map(item -> new ItemStack(item.getBlock()))
-        .collect(Collectors.toList());
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, MultiblockUtils.getMultiblockItems());
     }
 }
