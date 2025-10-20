@@ -95,9 +95,4 @@ public class EmiMultiblockRecipe implements EmiRecipe {
             }
         }
     }
-
-    @Override
-    public boolean supportsRecipeTree() {
-        return false;
-    }
 }
