@@ -3,6 +3,10 @@ name: Create Release and Publish
 on:
   workflow_dispatch:
     inputs:
+      changelog:
+        description: Changelog description
+        required: true
+        type: 'string'
       create-github-release:
         description: Build and create GitHub release
         required: false
@@ -59,7 +63,7 @@ jobs:
           commit: main
           tag: v${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
           name: v${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
-          body: Mod version ${{ steps.get-version.outputs.mc_version }}-${{ steps.get-version.outputs.mod_version }}
+          body: ${{ inputs.changelog }}
 
       - name: Publish to CurseForge
         if: ${{ inputs.publish-to-curseforge }}
@@ -72,6 +76,7 @@ jobs:
           project_id: 634571
           release_type: release
           token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog: ${{ inputs.changelog }}
 
       - name: Publish to Modrinth
         if: ${{ inputs.publish-to-modrinth }}
@@ -87,3 +92,4 @@ jobs:
           loaders: neoforge,forge
           featured: true
           project_id: ffLYPaWN
+          changelog: ${{ inputs.changelog }}
